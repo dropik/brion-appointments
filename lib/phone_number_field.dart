@@ -10,14 +10,18 @@ class PhoneNumberField extends StatelessWidget {
     if (query == null || query.isEmpty) return [];
 
     final contacts = await FlutterContacts.getContacts(withProperties: true);
-    return contacts
-        .where((contact) => contact.displayName.contains(RegExp(RegExp.escape(query), caseSensitive: false)) && contact.phones.isNotEmpty)
-        .map((contact) {
-          final phone = contact.phones.first.number;
-          final name = contact.displayName;
-          return Suggestion(label: name, value: phone);
-        })
-        .toList();
+    final results = <Suggestion<String>>[];
+
+    for (final contact in contacts) {
+      if (contact.phones.isEmpty) continue;
+      if (!contact.displayName.toLowerCase().contains(query.toLowerCase())) continue;
+
+      for (final phone in contact.phones) {
+        results.add(Suggestion(label: contact.displayName, value: phone.number));
+      }
+    }
+
+    return results;
   }
 
   @override
@@ -27,6 +31,10 @@ class PhoneNumberField extends StatelessWidget {
         return AsyncAutocomplete<String>(
           control: form.control('phoneNumber') as FormControl<String>,
           source: _fetchContactSuggestions,
+          suggestionBuilder: (context, suggestion) => ListTile(
+            title: Text(suggestion.label),
+            subtitle: Text(suggestion.value),
+          ),
           controlBuilder: (context, focusNode) {
             return ReactiveTextField<String>(
               formControlName: 'phoneNumber',

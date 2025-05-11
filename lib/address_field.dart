@@ -40,11 +40,15 @@ class AddressField extends StatelessWidget {
   Widget build(BuildContext context) {
     return ReactiveFormConsumer(
       builder: (context, form, child) {
+        final theme = Theme.of(context);
         final control = form.control('address') as FormControl<String>;
 
         return AsyncAutocomplete<String>(
           control: control,
           source: _fetchAddressSuggestions,
+          suggestionBuilder: (context, suggestion) => ListTile(
+            title: Text(suggestion.label, style: theme.textTheme.bodyMedium),
+          ),
           controlBuilder: (context, focusNode) => ReactiveTextField<String>(
             formControlName: 'address',
             focusNode: focusNode, // Attach the FocusNode

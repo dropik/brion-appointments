@@ -9,11 +9,13 @@ class AsyncAutocomplete<T> extends StatefulWidget {
     required this.control,
     required this.source,
     required this.controlBuilder,
+    required this.suggestionBuilder,
   });
 
   final AbstractControl<T> control;
   final Future<List<Suggestion<T>>> Function(T? query) source;
   final Widget Function(BuildContext context, FocusNode focusNode) controlBuilder;
+  final Widget Function(BuildContext context, Suggestion<T> suggestion) suggestionBuilder;
 
   @override
   State<AsyncAutocomplete<T>> createState() => _AsyncAutocompleteState<T>();
@@ -69,8 +71,6 @@ class _AsyncAutocompleteState<T> extends State<AsyncAutocomplete<T>> {
 
     _overlayEntry = OverlayEntry(
       builder: (context) {
-        final theme = Theme.of(context);
-
         return Positioned(
           width: MediaQuery.of(context).size.width - 32,
           child: CompositedTransformFollower(
@@ -98,11 +98,11 @@ class _AsyncAutocompleteState<T> extends State<AsyncAutocomplete<T>> {
                       itemCount: snapshot.data!.length,
                       itemBuilder: (context, index) {
                         final suggestion = snapshot.data![index];
-                        return ListTile(
-                          title: Text(suggestion.label, style: theme.textTheme.bodyMedium),
+                        return InkWell(
                           onTap: () {
                             widget.control.updateValue(suggestion.value);
                           },
+                          child: widget.suggestionBuilder(context, suggestion),
                         );
                       },
                     ),
