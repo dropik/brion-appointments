@@ -6,19 +6,17 @@ import 'package:reactive_forms/reactive_forms.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class SendToWhatsappButton extends StatelessWidget {
-  const SendToWhatsappButton({super.key, required this.form});
-
-  final FormGroup form;
+  const SendToWhatsappButton({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final messenger = ScaffoldMessenger.of(context);
-
     return ReactiveFormConsumer(
       builder: (context, form, child) {
+        final messenger = ScaffoldMessenger.of(context);
+
         return ElevatedButton(
           onPressed: form.valid || form.pristine
-              ? () async => await _generateAndOpenWhatsAppLink(messenger)
+              ? () async => await _generateAndOpenWhatsAppLink(form, messenger)
               : null,
           child: const Text('Отправить в WhatsApp'),
         );
@@ -26,7 +24,7 @@ class SendToWhatsappButton extends StatelessWidget {
     );
   }
 
-  Future<void> _generateAndOpenWhatsAppLink(ScaffoldMessengerState messenger) async {
+  Future<void> _generateAndOpenWhatsAppLink(FormGroup form, ScaffoldMessengerState messenger) async {
     if (!form.valid) {
       form.markAllAsTouched();
       form.markAsDirty();

@@ -3,9 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 
 class DateTimeField extends StatelessWidget {
-  const DateTimeField({super.key, required this.form});
-
-  final FormGroup form;
+  const DateTimeField({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -13,7 +11,7 @@ class DateTimeField extends StatelessWidget {
       formControlName: 'date',
       builder: (context, control, child) {
         return InkWell(
-          onTap: () => _selectDateTime(context),
+          onTap: () => _selectDateTime(context, control),
           child: InputDecorator(
             decoration: const InputDecoration(
               labelText: 'Дата',
@@ -43,10 +41,10 @@ class DateTimeField extends StatelessWidget {
     );
   }
 
-  Future<void> _selectDateTime(BuildContext context) async {
+  Future<void> _selectDateTime(BuildContext context, AbstractControl<DateTime> control) async {
     final DateTime? pickedDate = await showDatePicker(
       context: context,
-      initialDate: form.control('date').value as DateTime,
+      initialDate: control.value as DateTime,
       firstDate: DateTime(2000),
       lastDate: DateTime(2100),
       locale: Localizations.localeOf(context), // Use locale for date picker
@@ -62,14 +60,14 @@ class DateTimeField extends StatelessWidget {
 
     final TimeOfDay? pickedTime = await showTimePicker(
       context: context,
-      initialTime: TimeOfDay.fromDateTime(form.control('date').value as DateTime),
+      initialTime: TimeOfDay.fromDateTime(control.value as DateTime),
     );
 
     if (pickedTime == null) {
       return;
     }
 
-    form.control('date').value = DateTime(
+    control.value = DateTime(
       pickedDate.year,
       pickedDate.month,
       pickedDate.day,

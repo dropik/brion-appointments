@@ -4,7 +4,7 @@ import 'package:reactive_forms/reactive_forms.dart';
 class LinkGeneratorForm extends StatefulWidget {
   const LinkGeneratorForm({super.key, required this.childBuilder});
 
-  final Widget Function(FormGroup form) childBuilder;
+  final Widget Function(BuildContext context, FormGroup form) childBuilder;
 
   @override
   State<LinkGeneratorForm> createState() => _LinkGeneratorFormState();
@@ -28,7 +28,7 @@ class _LinkGeneratorFormState extends State<LinkGeneratorForm> {
   Widget build(BuildContext context) {
     return ReactiveForm(
       formGroup: form,
-      child: widget.childBuilder(form),
+      child: widget.childBuilder(context, form),
     );
   }
 }

@@ -22,16 +22,16 @@ class WhatsAppLinkGeneratorScreen extends StatelessWidget {
         body: Padding(
           padding: const EdgeInsets.all(16.0),
           child: LinkGeneratorForm(
-            childBuilder: (form) => Column(
+            childBuilder: (context, form) => const Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
-                DateTimeField(form: form),
-                const SizedBox(height: 16),
-                const PhoneNumberField(),
-                const SizedBox(height: 16),
-                const AddressField(),
-                const SizedBox(height: 32),
-                SendToWhatsappButton(form: form),
+                DateTimeField(),
+                SizedBox(height: 16),
+                PhoneNumberField(),
+                SizedBox(height: 16),
+                AddressField(),
+                SizedBox(height: 32),
+                SendToWhatsappButton(),
               ],
             ),
           ),
