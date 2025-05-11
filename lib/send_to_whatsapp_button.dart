@@ -37,7 +37,9 @@ class SendToWhatsappButton extends StatelessWidget {
 
     final message = 'Ваша встреча:\n'
         'Дата/время: $dateTime\n'
-        'Адрес: $address';
+        'Адрес: $address\n\n'
+        'Посетите наш сайт: https://brionestate.ru/#wa\n'
+        'Если ссылка не активна, добавьте этот номер в контакты.';
 
     final encodedMessage = Uri.encodeComponent(message);
     final whatsappUrl = Platform.isIOS
