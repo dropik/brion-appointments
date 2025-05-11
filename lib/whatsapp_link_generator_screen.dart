@@ -29,7 +29,7 @@ class WhatsAppLinkGeneratorScreen extends StatelessWidget {
                 const SizedBox(height: 16),
                 const PhoneNumberField(),
                 const SizedBox(height: 16),
-                AddressField(form: form),
+                const AddressField(),
                 const SizedBox(height: 32),
                 SendToWhatsappButton(form: form),
               ],
