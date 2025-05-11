@@ -101,6 +101,7 @@ class _AsyncAutocompleteState<T> extends State<AsyncAutocomplete<T>> {
                         return InkWell(
                           onTap: () {
                             widget.control.updateValue(suggestion.value);
+                            widget.control.unfocus();
                           },
                           child: widget.suggestionBuilder(context, suggestion),
                         );
