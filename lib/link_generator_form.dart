@@ -25,6 +25,22 @@ class _LinkGeneratorFormState extends State<LinkGeneratorForm> {
   });
 
   @override
+  void initState() {
+    super.initState();
+
+    final phoneControl = form.control('phoneNumber') as FormControl<String>;
+    phoneControl.valueChanges.listen((value) {
+      if (value != null && value.isNotEmpty) {
+        if (value.startsWith('8')) {
+          // Remove the leading '8' and add '+7'
+          final newValue = '+7${value.substring(1)}';
+          form.control('phoneNumber').updateValue(newValue);
+        }
+      }
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
     return ReactiveForm(
       formGroup: form,
